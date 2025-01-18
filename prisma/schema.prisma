@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,33 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Deliveryman{
-  id        String @id    @default(uuid())
-  username  String @unique
-  password  String
-  
-  @@map("deliveryman")
+model Deliveryman {
+  id         String       @id @default(uuid())
+  username   String       @unique
+  password   String
   Deliveries Deliveries[]
+
+  @@map("deliveryman")
 }
 
-model Clients{
-  id          String @id    @default(uuid())
-  username    String @unique
-  password     String
+model Clients {
+  id         String       @id @default(uuid())
+  username   String       @unique
+  password   String
+  Deliveries Deliveries[]
 
   @@map("clients")
-  Deliveries Deliveries[]
 }
 
-model Deliveries{
-  id              String @id    @default(uuid())
-  id_client       String
-  client          Clients      @relation(fields:[id_client], references :[id])
-  id_deliveryman  String?
-  deliveryman     Deliveryman?  @relation(fields:[id_deliveryman], references :[id])
-  item_name       String
-  created_at      DateTime @default(now())
-  end_at          DateTime? 
+model Deliveries {
+  id             String       @id @default(uuid())
+  id_client      String
+  id_deliveryman String?
+  item_name      String
+  created_at     DateTime     @default(now())
+  end_at         DateTime?
+  client         Clients      @relation(fields: [id_client], references: [id])
+  deliveryman    Deliveryman? @relation(fields: [id_deliveryman], references: [id])
 
+  @@index([id_client], map: "deliveries_id_client_fkey")
+  @@index([id_deliveryman], map: "deliveries_id_deliveryman_fkey")
   @@map("deliveries")
 }

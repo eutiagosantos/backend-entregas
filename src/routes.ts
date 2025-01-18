@@ -29,7 +29,7 @@ routes.post("/deliveryman/", (req, res) => {
     createDeliverymanController.handle(req, res);
 });
 
-routes.post("/delivery", (req, res) => {
+routes.post("/delivery/", (req, res) => {
     createDeliveryController.handle(req, res);
 });
 
