@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 
 interface IPayload {
-    sub: string
+    sub: string;
 }
-export async function ensureAuthenticateDeliveryman(request: Request, response: Response, next: NextFunction) {
 
+export function ensureAuthenticateDeliveryman(request: Request, response: Response, next: NextFunction) {
     const auth = request.headers.authorization;
 
     if (!auth) {
@@ -26,5 +26,4 @@ export async function ensureAuthenticateDeliveryman(request: Request, response: 
             message: "Invalid token"
         });
     }
-
 }
